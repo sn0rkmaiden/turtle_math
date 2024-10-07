@@ -1,0 +1,95 @@
+{
+    "language": "English",
+    "@language": {
+        "description": "The current language"
+    },
+    "run": "RUN",
+    "@run": {
+        "description": "RUN"
+    },
+    "page1latex": "<h3>Visualizing solutions to 2nd and 3rd degree algebraic equations using right-angle geometric paths</h3>",
+    "@page1latex": {
+        "description": "Find roots of polynomials by shooting laser at a turtle!"
+    },
+    "page1text": "For equations of odd degree there is always one real solution. For equations of even degree, there may be no real solution. But, if there are, they will occur in pairs.",
+    "@page1text": {
+        "description": ""
+    },
+    "page2latex": "<h4>Coefficients are expressed in straight lines forming a geometric path (black line) where each coefficient is positioned at right angles to the previous, progressively counter-clockwise.</h4>",
+    "@page2latex": {
+        "description": "<h4>$$ax^3+bx^2+cx+d=0 \\atop ax^2+bx+c=0$$</h4>"
+    },
+    "page2text": "Red line provides real solutions if it intersects the <h4>b-line</h4> with negative solutions to the left and positive to the right relative to <h4>a-line</h4>",
+    "@page2text": {
+        "description": ""
+    },
+    "page3latex": "",
+    "@page3latex": {
+        "description": ""
+    },
+    "page3text": "",
+    "@page3text": {
+        "description": ""
+    },
+    "page4latex": "<h4>Want to learn more? Here is a list of useful resources!</h4>",
+    "@page4latex": {
+        "description": ""
+    },
+    "page4text": "<li><a href='intent:https://web.archive.org/web/20100502013959/http://www.concentric.net/~pvb/ALG/rightpaths.html#Intent;end' target='_blank' ' style='color:lime'>'Extending Lill's method of 1867' by Phillips Verner Bradford</a></li> <li> <a href='goto://DeviceBrowser?url=https://www.youtube.com/watch?v=IUC-8P0zXe8' style='color:DeepSkyBlue'>Mathologer video</a> </li> <li> <a href='goto://DeviceBrowser?url=https://www.raulprisacariu.com/lills-method/' style='color:OrangeRed'>Cool website with more links</a> </li> ",
+    "@page4text": {
+        "description": ""
+    },
+    "page5latex": "<h4>In general, any algebraic equation can be divided by its first coefficient, so that the first coefficient of the resulting equation is a = +1.</h4>",
+    "@page5latex": {
+        "description": ""
+    },
+    "page5text": "This means that the segment corresponding to the first coefficient will always be draw vertically up and be 1 unit long.",
+    "@page5text": {
+        "description": ""
+    },
+    "coefficients": "Type coefficients of cubic equation",
+    "@coefficients": {
+        "description": ""
+    },
+    "startButton": "Start drawing the path!",
+    "@startButton": {
+        "description": ""
+    },
+    "xPoint": "You choose the point by changing the angle of the laser",
+    "@xPoint": {
+        "description": ""
+    },
+    "pOfX": "Polynomial evaluated at the point X. Look for this value to get as close to zero as possible!",
+    "@pOfX": {
+        "description": ""
+    },
+    "error": "You should type in all the coefficients first!",
+    "@error": {
+        "description": ""
+    },
+    "congrats": "Congratulations! \nYou have found a root: x = ",
+    "@congrats": {
+        "description": ""
+    },
+    "allRoots": "Yahoo! You have found all the roots!",
+    "@allRoots": {
+        "description": ""
+    },
+    "numRoots": "Number of found roots:",    
+    "@numRoots": {
+        "description": ""
+    },
+    "rootsDescription": "Track number of roots that you have found!",    
+    "@rootsDescription": {
+        "description": ""
+    },
+    "drawing": "Use ONE finger to control light beam and TWO fingers move it around! To scale image double tap on right / left half of the screen.",    
+    "@drawing": {
+        "description": ""
+    },
+    "hasComplexRoots": "Be careful! This equation has complex roots which you currently cannot find using this method.",    
+    "@hasComplexRoots": {
+        "description": ""
+    }
+
+}
