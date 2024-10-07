@@ -1,6 +1,6 @@
 # turtle_maths
 
-Visualize solutions to 2nd and 3rd degree polynomials using Lill's method.s
+Visualize solutions to 2nd and 3rd degree polynomials using Lill's method.
 
 ## Getting Started
 
