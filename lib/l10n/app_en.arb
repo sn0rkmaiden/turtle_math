@@ -87,7 +87,7 @@
     "@drawing": {
         "description": ""
     },
-    "hasComplexRoots": "Be careful! This equation has complex roots which you currently cannot find using this method.",    
+    "hasComplexRoots": "Be careful! This equation has complex roots.",    
     "@hasComplexRoots": {
         "description": ""
     }

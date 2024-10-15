@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
         // home: ShowCaseWidget(builder: (context) => const MyHomePage()),
         home: onBoardingComplete
             ? ShowCaseWidget(builder: (context) => const MyHomePage())
-            : OnBoardingScreen(),
+            : OnBoardingScreen(), 
         supportedLocales: L10n.all,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         locale: _locale,
@@ -386,11 +386,12 @@ class _MyHomePageState extends State<MyHomePage>
       }
 
       String r = "";
-      String r2 = "";
+      // String r2 = "";
 
       try {
         for (final root in equation.solutions()) {
-          if (root.imaginary > 0) {
+          print("Root: $root");
+          if (root.imaginary.abs() >= 10e-2) {
             hasComplexRoots = true;
           }
 
@@ -399,7 +400,7 @@ class _MyHomePageState extends State<MyHomePage>
             _binRes.add(0);
           });
           r += "${root.real.toStringAsFixed(3)}  ";
-          r2 += "${root.imaginary.toStringAsFixed(3)}  ";
+          // r2 += "${root.imaginary.toStringAsFixed(3)}  ";
         }
       } catch (e) {
         WidgetsBinding.instance.addPostFrameCallback((_) => toastification.show(
@@ -531,7 +532,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         ratio3 = int.parse(myController3.text);
                                         ratio4 = int.parse(myController4.text);
 
-                                        if (ratio1 != 0) {
+                                        if ((ratio1 != 0) & (ratio1 != 1)) {
                                           ratio2 = ratio2 ~/ ratio1;
                                           ratio3 = ratio3 ~/ ratio1;
                                           ratio4 = ratio4 ~/ ratio1;
@@ -915,6 +916,7 @@ class MyPainter extends CustomPainter {
         canvas.drawPath(solution, solutionPaint);                
 
         // if circle does not intersect b-line
+        // quadratic equation
         if (firstZero & (((_height - _ratio1 - shift) < (circleCenter.dy - radius)) | ((_height - _ratio1 - shift) > (circleCenter.dy + radius)))){
           double blueRadius = (_ratio3 + _ratio1) / 2;
           Offset blueCenter = Offset(_width - _ratio2, _height - shift + blueRadius - 2 * _ratio1);          
@@ -928,6 +930,7 @@ class MyPainter extends CustomPainter {
           canvas.drawPoints(ui.PointMode.points, [root1, root2], imaginaryRootsPaint..color=Colors.green..strokeWidth=8);
           canvas.drawLine(root1, root2, imaginaryRootsPaint..strokeWidth=2);
         }
+        // cubic equation
         if (!firstZero & _foundRealRoot & _hasComplexRoots){ 
           Offset pointOne = Offset(_width - k * _ratio1, _height - _ratio1 - shift);         
           Offset pointTwo = Offset(_width - _ratio2, _height - 2 * _ratio1 + k * (_ratio2 - k * _ratio1) - shift);
