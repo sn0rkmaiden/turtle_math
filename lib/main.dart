@@ -165,9 +165,8 @@ class _MyHomePageState extends State<MyHomePage>
   var yPos = 0.0;
 
   int _numRoots = 0;
-  final List<equations.Complex> _res = [];
-  final List<int> _binRes = [];
-  String _roots = "";
+  final List<double> _trueRealRoots = [];
+  final List<int> _binRes = [];  
   bool shown = false;  
   bool foundRealRoot = false;
   bool hasComplexRoots = false;
@@ -277,31 +276,26 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   String calcDistance(String solution) {
-    double p = MyPainter.getP();
-    double foundRoot = 0;
+    double p = MyPainter.getP();    
     if (p.isNaN) {
       return "0";
     } else {
       if ((p.abs() <= 0.5) & (isComplete == true)) {
-        if (_res.isNotEmpty) {
+        if (_trueRealRoots.isNotEmpty) {   
+          print("Real roots: $_trueRealRoots");
           bool found = false;
-          double x = double.parse(solution);
-          List<double> values = [];
-          for (int i = 0; i < _res.length; i++) {
-            values.add(_res[i].real);
-          }
-          double closestValue = getClosestValueInArray(values, x);
-          for (int i = 0; i < _binRes.length; i++) {
-            if ((_res[i].real.toInt() == closestValue.toInt()) & (_binRes[i] == 0)) {
-              _numRoots += 1;
-              found = true;
+          double x = double.parse(solution);                    
+          double closestValue = 0;
+
+          for (int i = 0; i < _trueRealRoots.length; i++){
+            if (((_trueRealRoots[i] - x).abs() <= 0.01) & (_binRes[i] == 0)){ 
+              closestValue = _trueRealRoots[i];
               _binRes[i] = 1;
-              // found one real root
-              if ((_res[i].real.toInt() == closestValue.toInt()) & (_res[i].imaginary.toInt() == 0)){
-                foundRealRoot = true;
-              }
+              found = true;
+              _numRoots += 1;
             }
           }
+          
           if ((_numRoots == _binRes.length) & (shown == false)) {
             shown = true;
             WidgetsBinding.instance.addPostFrameCallback((_) =>
@@ -354,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
-  String getRoots(String t1, String t2, String t3, String t4) {
+  void getRoots(String t1, String t2, String t3, String t4) {
     if (t1.isNotEmpty & t2.isNotEmpty & t3.isNotEmpty & t4.isNotEmpty) {
       int x1 = int.parse(t1);
       int x2 = int.parse(t2);
@@ -366,9 +360,7 @@ class _MyHomePageState extends State<MyHomePage>
         x3 = x3 ~/ x1;
         x4 = x4 ~/ x1;
         x1 = 1;
-      }
-
-      // bool hasComplexRoots = false;
+      }      
 
       final equations.Algebraic equation;
 
@@ -383,24 +375,20 @@ class _MyHomePageState extends State<MyHomePage>
             a: equations.Complex.fromReal(x2.toDouble()),
             b: equations.Complex.fromReal(x3.toDouble()),
             c: equations.Complex.fromReal(x4.toDouble()));
-      }
-
-      String r = "";
-      // String r2 = "";
+      }           
 
       try {
-        for (final root in equation.solutions()) {
-          print("Root: $root");
+        for (final root in equation.solutions()) {          
           if (root.imaginary.abs() >= 10e-2) {
-            hasComplexRoots = true;
-          }
-
+            hasComplexRoots = true;            
+          }          
           setState(() {
-            _res.add(root);
-            _binRes.add(0);
-          });
-          r += "${root.real.toStringAsFixed(3)}  ";
-          // r2 += "${root.imaginary.toStringAsFixed(3)}  ";
+            if (root.imaginary.abs() < 10e-2){
+              _trueRealRoots.add(root.real);
+              _binRes.add(0);
+              foundRealRoot = true;
+            }                                           
+          });                            
         }
       } catch (e) {
         WidgetsBinding.instance.addPostFrameCallback((_) => toastification.show(
@@ -417,11 +405,8 @@ class _MyHomePageState extends State<MyHomePage>
             style: ToastificationStyle.fillColored,
             primaryColor: Colors.orangeAccent,
             autoCloseDuration: const Duration(seconds: 5)));
-      }
-      return r;
-    } else {
-      return "";
-    }
+      }      
+    } 
   }
 
   @override
@@ -523,7 +508,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         foundRealRoot = false;
                                         hasComplexRoots = false;
                                         shown = false;
-                                        _res.clear();
+                                        _trueRealRoots.clear();
                                         _binRes.clear();
                                         _numRoots = 0;
 
@@ -539,7 +524,7 @@ class _MyHomePageState extends State<MyHomePage>
                                           ratio1 = 1;
                                         }
 
-                                        _roots = getRoots(
+                                        getRoots(
                                             myController1.text,
                                             myController2.text,
                                             myController3.text,
@@ -602,8 +587,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 Padding(
                     padding: const EdgeInsets.all(1.0),
-                    child:
-                        // Text("$_roots ${_binRes.toString()} $_numRoots"),
+                    child:                        
                         Showcase(
                       key: keyNumRoots,
                       description:
