@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  draw_on_path: ^0.0.2
   flutter_tex: ^4.0.9
   arrow_path: ^3.1.0
   tex_text: ^0.1.9

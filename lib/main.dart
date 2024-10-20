@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:arrow_path/arrow_path.dart';
 import 'package:concentric_transition/concentric_transition.dart';
+import 'package:draw_on_path/draw_on_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -124,7 +125,7 @@ class MyApp extends StatelessWidget {
         // home: ShowCaseWidget(builder: (context) => const MyHomePage()),
         home: onBoardingComplete
             ? ShowCaseWidget(builder: (context) => const MyHomePage())
-            : OnBoardingScreen(), 
+            : OnBoardingScreen(),
         supportedLocales: L10n.all,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         locale: _locale,
@@ -166,8 +167,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   int _numRoots = 0;
   final List<double> _trueRealRoots = [];
-  final List<int> _binRes = [];  
-  bool shown = false;  
+  final List<int> _binRes = [];
+  bool shown = false;
   bool foundRealRoot = false;
   bool hasComplexRoots = false;
 
@@ -260,42 +261,31 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
-  double getClosestValueInArray(List<double> array, double value) {
-    double closest = array.first;
-    double bestCloseness = (closest - value).abs();
-
-    for (double element in array.skip(1)) {
-      double closeness = (element - value).abs();
-
-      if (closeness < bestCloseness) {
-        closest = element;
-        bestCloseness = closeness;
-      }
-    }
-    return closest;
-  }
-
   String calcDistance(String solution) {
-    double p = MyPainter.getP();    
+    double p = MyPainter.getP();
     if (p.isNaN) {
       return "0";
     } else {
       if ((p.abs() <= 0.5) & (isComplete == true)) {
-        if (_trueRealRoots.isNotEmpty) {   
-          print("Real roots: $_trueRealRoots");
+        if (_trueRealRoots.isNotEmpty) {
+          // print("Real roots: $_trueRealRoots");
           bool found = false;
-          double x = double.parse(solution);                    
+          double x = double.parse(solution);
           double closestValue = 0;
 
-          for (int i = 0; i < _trueRealRoots.length; i++){
-            if (((_trueRealRoots[i] - x).abs() <= 0.01) & (_binRes[i] == 0)){ 
+          for (int i = 0; i < _trueRealRoots.length; i++) {
+            if (((_trueRealRoots[i] - x).abs() <= 0.1) & (_binRes[i] == 0)) {
               closestValue = _trueRealRoots[i];
               _binRes[i] = 1;
               found = true;
               _numRoots += 1;
             }
           }
-          
+
+          if (found & !foundRealRoot) {
+            foundRealRoot = true;
+          }
+
           if ((_numRoots == _binRes.length) & (shown == false)) {
             shown = true;
             WidgetsBinding.instance.addPostFrameCallback((_) =>
@@ -360,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage>
         x3 = x3 ~/ x1;
         x4 = x4 ~/ x1;
         x1 = 1;
-      }      
+      }
 
       final equations.Algebraic equation;
 
@@ -375,20 +365,19 @@ class _MyHomePageState extends State<MyHomePage>
             a: equations.Complex.fromReal(x2.toDouble()),
             b: equations.Complex.fromReal(x3.toDouble()),
             c: equations.Complex.fromReal(x4.toDouble()));
-      }           
+      }
 
       try {
-        for (final root in equation.solutions()) {          
+        for (final root in equation.solutions()) {
           if (root.imaginary.abs() >= 10e-2) {
-            hasComplexRoots = true;            
-          }          
+            hasComplexRoots = true;
+          }
           setState(() {
-            if (root.imaginary.abs() < 10e-2){
+            if (root.imaginary.abs() < 10e-2) {
               _trueRealRoots.add(root.real);
               _binRes.add(0);
-              foundRealRoot = true;
-            }                                           
-          });                            
+            }
+          });
         }
       } catch (e) {
         WidgetsBinding.instance.addPostFrameCallback((_) => toastification.show(
@@ -405,8 +394,8 @@ class _MyHomePageState extends State<MyHomePage>
             style: ToastificationStyle.fillColored,
             primaryColor: Colors.orangeAccent,
             autoCloseDuration: const Duration(seconds: 5)));
-      }      
-    } 
+      }
+    }
   }
 
   @override
@@ -504,7 +493,6 @@ class _MyHomePageState extends State<MyHomePage>
                                           myController2.text.isNotEmpty &
                                           myController3.text.isNotEmpty &
                                           myController4.text.isNotEmpty) {
-
                                         foundRealRoot = false;
                                         hasComplexRoots = false;
                                         shown = false;
@@ -587,8 +575,7 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 Padding(
                     padding: const EdgeInsets.all(1.0),
-                    child:                        
-                        Showcase(
+                    child: Showcase(
                       key: keyNumRoots,
                       description:
                           AppLocalizations.of(context)!.rootsDescription,
@@ -707,7 +694,7 @@ class _MyHomePageState extends State<MyHomePage>
 
 class MyPainter extends CustomPainter {
   ui.Image? image;
-  double _width = 0;  
+  double _width = 0;
   double _height = 0;
   static int _ratio1 = 0;
   static int _ratio2 = 0;
@@ -723,9 +710,22 @@ class MyPainter extends CustomPainter {
   bool firstZero = false;
   bool _foundRealRoot = false;
   bool _hasComplexRoots = false;
+  final _textPainter = TextPainter(textDirection: TextDirection.ltr);
 
-  MyPainter(width, height, ratio1, ratio2, ratio3, ratio4, isComplete, foundRealRoot, hasComplexRoots,
-      this._progress, this.tappedPoint, this._xPos, this._yPos,
+  MyPainter(
+      width,
+      height,
+      ratio1,
+      ratio2,
+      ratio3,
+      ratio4,
+      isComplete,
+      foundRealRoot,
+      hasComplexRoots,
+      this._progress,
+      this.tappedPoint,
+      this._xPos,
+      this._yPos,
       [this.image]) {
     _width = width;
     _height = height;
@@ -751,8 +751,40 @@ class MyPainter extends CustomPainter {
     }
   }
 
+  Path getPathForText(int offset) {
+    return Path()
+      ..moveTo(_width - offset, _height - offset)
+      ..lineTo(_width - offset, _height - _ratio1 - offset)
+      ..lineTo(_width - _ratio2 + offset, _height - _ratio1 - offset)
+      ..lineTo(_width - _ratio2 + offset, _height - _ratio1 + _ratio3 + offset)
+      ..lineTo(
+          _width - _ratio2 + _ratio4, _height - _ratio1 + _ratio3 + offset);
+  }
+
+  Path getSubPathForText(int offset, double tangent) {
+    return Path()
+      ..moveTo(_width - offset, _height - offset)
+      ..lineTo(_width - tangent * _ratio1, _height - _ratio1)
+      ..lineTo(_width - _ratio2,
+          _height - _ratio1 + tangent * (_ratio2 - tangent * _ratio1))
+      ..lineTo(
+          _width -
+              _ratio2 +
+              tangent * (_ratio3 - tangent * (_ratio2 - tangent * _ratio1)),
+          _height - _ratio1 + _ratio3);
+  }
+
   static double getK() {
     return k;
+  }
+
+  void paintText(Canvas canvas, Size size, String text, Offset point) {
+    final textSpan = TextSpan(
+        text: text, style: const TextStyle(color: Colors.black, fontSize: 20));
+    final textPainter =
+        TextPainter(text: textSpan, textDirection: ui.TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: size.width);
+    textPainter.paint(canvas, point);
   }
 
   @override
@@ -805,9 +837,12 @@ class MyPainter extends CustomPainter {
     _height += (math.max(_ratio2, _ratio4) / 2);
 
     var path = getPath2();
+    Path textPath = getPathForText(20);
     Rect bounds = path.getBounds();
     if (bounds.bottom >= size.height) {
       path = path
+          .shift(Offset(0, -(bounds.bottom - _height + bounds.center.dy / 10)));
+      textPath = textPath
           .shift(Offset(0, -(bounds.bottom - _height + bounds.center.dy / 10)));
     }
 
@@ -840,6 +875,18 @@ class MyPainter extends CustomPainter {
       canvas.drawImage(image!, location, linePaint);
       canvas.restore();
       if (_isComplete) {
+        canvas.drawTextOnPath(
+          "${(_ratio1 ~/ _scale).abs()}  ${(_ratio2 ~/ _scale).abs()}  ${(_ratio3 ~/ _scale).abs()}  ${(_ratio4 ~/ _scale).abs()}",
+          textPath,
+          textStyle: const TextStyle(
+              color: ui.Color.fromARGB(255, 0, 166, 6),
+              fontSize: 25,
+              fontWeight: ui.FontWeight.bold),
+          autoSpacing: true,
+          textAlignment: TextAlignment.mid,
+          isClosed: true,
+        );
+
         // canvas.drawLine(Offset(_width, _height), tappedPoint, solutionPaint);
         // k = (tappedPoint.dy - _height) / (_width - tappedPoint.dx);
         k = (_width - tappedPoint.dx) / (_height - tappedPoint.dy);
@@ -881,56 +928,174 @@ class MyPainter extends CustomPainter {
         }*/
 
         Offset endPoint = firstZero
-            ? Offset(
-                _width - _ratio2, _height - _ratio1 + _ratio3 - shift)
+            ? Offset(_width - _ratio2, _height - _ratio1 + _ratio3 - shift)
             : Offset(
                 _width - _ratio2 + k * (_ratio3 - k * (_ratio2 - k * _ratio1)),
                 _height - _ratio1 + _ratio3 - shift);
         Offset startPoint = Offset(_width, _height - shift);
-        Offset circleCenter = Offset(
-            _width + (endPoint.dx - startPoint.dx) / 2,
-            _height + (endPoint.dy - startPoint.dy) / 2 - shift); 
-        double radius = (circleCenter - startPoint).distance;       
-        canvas.drawCircle(
-            circleCenter, radius, imaginaryPaint);
+        Offset circleCenter = Offset(_width + (endPoint.dx - startPoint.dx) / 2,
+            _height + (endPoint.dy - startPoint.dy) / 2 - shift);
+        double radius = (circleCenter - startPoint).distance;
+        canvas.drawCircle(circleCenter, radius, imaginaryPaint);
 
         // imaginary lines
         checkSolution(canvas, k, imaginaryPaint, extracted, shift);
 
-        canvas.drawPath(solution, solutionPaint);                
-
+        canvas.drawPath(solution, solutionPaint);
+        if (!firstZero) {
+          // first coefficient
+          canvas.drawTextOnPath(
+            ((math.sqrt(math.pow(_ratio1, 2) + math.pow(k * _ratio1, 2))) /
+                    _scale)
+                .abs()
+                .toStringAsFixed(1),
+            Path()
+              ..moveTo(
+                  _width + (-k * _ratio1) / 2, _height + (-_ratio1) / 2 - shift)
+              ..lineTo(_width - k * _ratio1, _height - _ratio1 - shift),
+            textStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: ui.FontWeight.bold),
+            textAlignment: TextAlignment.mid,
+          );
+          // second coefficient
+          canvas.drawTextOnPath(
+            ((math.sqrt(math.pow(_ratio2 - k * _ratio1, 2) +
+                        math.pow(k * (_ratio2 - k * _ratio1), 2))) /
+                    _scale)
+                .abs()
+                .toStringAsFixed(1),
+            Path()
+              ..moveTo(_width - k * _ratio1 + (k * _ratio1 - _ratio2) / 2,
+                  _height - _ratio1 + (k * (_ratio2 - k * _ratio1)) / 2 - shift)
+              ..lineTo(_width - _ratio2,
+                  _height - _ratio1 + k * (_ratio2 - k * _ratio1) - shift),
+            textStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: ui.FontWeight.bold),
+            textAlignment: TextAlignment.mid,
+          );
+          // third coefficient
+          canvas.drawTextOnPath(
+            ((math.sqrt(math.pow(_ratio3 - k * (_ratio2 - k * _ratio1), 2) +
+                        math.pow(
+                            k * (_ratio3 - k * (_ratio2 - k * _ratio1)), 2))) /
+                    _scale)
+                .abs()
+                .toStringAsFixed(1),
+            Path()
+              ..moveTo(
+                  _width -
+                      _ratio2 +
+                      (k * (_ratio3 - k * (_ratio2 - k * _ratio1))) / 2,
+                  _height -
+                      _ratio1 +
+                      k * (_ratio2 - k * _ratio1) +
+                      (_ratio3 - k * (_ratio2 - k * _ratio1)) / 2 -
+                      shift)
+              ..lineTo(
+                  _width -
+                      _ratio2 +
+                      k * (_ratio3 - k * (_ratio2 - k * _ratio1)),
+                  _height - _ratio1 + _ratio3 - shift),
+            textStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: ui.FontWeight.bold),
+          );
+        }
         // if circle does not intersect b-line
         // quadratic equation
-        if (firstZero & (((_height - _ratio1 - shift) < (circleCenter.dy - radius)) | ((_height - _ratio1 - shift) > (circleCenter.dy + radius)))){
+        if (firstZero &
+            (((_height - _ratio1 - shift) < (circleCenter.dy - radius)) |
+                ((_height - _ratio1 - shift) > (circleCenter.dy + radius)))) {
           double blueRadius = (_ratio3 + _ratio1) / 2;
-          Offset blueCenter = Offset(_width - _ratio2, _height - shift + blueRadius - 2 * _ratio1);          
+          Offset blueCenter = Offset(
+              _width - _ratio2, _height - shift + blueRadius - 2 * _ratio1);
           canvas.drawCircle(blueCenter, blueRadius, imaginaryRootsPaint);
-          Offset yellowCenter = Offset(_width - _ratio2, _height - _ratio1 - shift);
-          double yellowRadius = (math.sqrt(blueRadius * blueRadius - (blueRadius - _ratio1)*(blueRadius - _ratio1)));
-          canvas.drawCircle(yellowCenter, yellowRadius, imaginaryRootsPaint..color=Colors.yellow.shade600);
-          double complexRoot = (math.sqrt(math.pow(yellowRadius, 2) - math.pow(_ratio2 / 2, 2)));
-          Offset root1 = Offset(_width - _ratio2 / 2, _height - _ratio1 - shift - complexRoot);
-          Offset root2 = Offset(_width - _ratio2 / 2, _height - _ratio1 - shift + complexRoot);
-          canvas.drawPoints(ui.PointMode.points, [root1, root2], imaginaryRootsPaint..color=Colors.green..strokeWidth=8);
-          canvas.drawLine(root1, root2, imaginaryRootsPaint..strokeWidth=2);
+          Offset yellowCenter =
+              Offset(_width - _ratio2, _height - _ratio1 - shift);
+          double yellowRadius = (math.sqrt(blueRadius * blueRadius -
+              (blueRadius - _ratio1) * (blueRadius - _ratio1)));
+          canvas.drawCircle(yellowCenter, yellowRadius,
+              imaginaryRootsPaint..color = Colors.yellow.shade600);
+          double complexRoot =
+              (math.sqrt(math.pow(yellowRadius, 2) - math.pow(_ratio2 / 2, 2)));
+          Offset root1 = Offset(
+              _width - _ratio2 / 2, _height - _ratio1 - shift - complexRoot);
+          Offset root2 = Offset(
+              _width - _ratio2 / 2, _height - _ratio1 - shift + complexRoot);
+          canvas.drawPoints(
+              ui.PointMode.points,
+              [root1, root2],
+              imaginaryRootsPaint
+                ..color = Colors.green
+                ..strokeWidth = 8);
+          canvas.drawLine(root1, root2, imaginaryRootsPaint..strokeWidth = 2);
+          paintText(
+              canvas,
+              size,
+              "(${(-_ratio2 / (2 * _scale)).toStringAsFixed(1)}, ${((complexRoot) / _scale).toStringAsFixed(1)}i)",
+              root1);
+          paintText(
+              canvas,
+              size,
+              "(${(-_ratio2 / (2 * _scale)).toStringAsFixed(1)}, ${((-complexRoot) / _scale).toStringAsFixed(1)}i)",
+              root2);
         }
         // cubic equation
-        if (!firstZero & _foundRealRoot & _hasComplexRoots){ 
-          Offset pointOne = Offset(_width - k * _ratio1, _height - _ratio1 - shift);         
-          Offset pointTwo = Offset(_width - _ratio2, _height - 2 * _ratio1 + k * (_ratio2 - k * _ratio1) - shift);
-          Offset pointThree = Offset(_width -_ratio2 + k * (_ratio3 - k * (_ratio2 - k * _ratio1)), _height - _ratio1 + _ratio3 - shift);
+        if (!firstZero & _foundRealRoot & _hasComplexRoots) {
+          Offset pointOne =
+              Offset(_width - k * _ratio1, _height - _ratio1 - shift);
+          Offset pointTwo = Offset(_width - _ratio2,
+              _height - 2 * _ratio1 + k * (_ratio2 - k * _ratio1) - shift);
+          Offset pointThree = Offset(
+              _width - _ratio2 + k * (_ratio3 - k * (_ratio2 - k * _ratio1)),
+              _height - _ratio1 + _ratio3 - shift);
           double blueRadius = (pointThree - pointTwo).distance.abs() / 2;
-          Offset blueCenter = Offset((pointThree.dx + pointTwo.dx) / 2, (pointThree.dy + pointTwo.dy) / 2);          
-          canvas.drawCircle(blueCenter, blueRadius, imaginaryRootsPaint);          
-          Offset yellowCenter = Offset(_width - _ratio2, _height -_ratio1 + k * (_ratio2 - k * _ratio1) - shift);
-          double yellowRadius = (math.sqrt(blueRadius * blueRadius - (blueRadius - _ratio1)*(blueRadius - _ratio1)));
-          canvas.drawCircle(yellowCenter, yellowRadius, imaginaryRootsPaint..color=Colors.yellow.shade600);
-          Offset centerPointOneTwo = Offset((pointOne.dx + yellowCenter.dx) / 2, (pointOne.dy + yellowCenter.dy) / 2);
-          double complexRoot = (math.sqrt(math.pow(yellowRadius, 2) - ((centerPointOneTwo - yellowCenter).distanceSquared)));          
-          Offset root1 = Offset(centerPointOneTwo.dx - complexRoot * math.sin(math.atan(k)), centerPointOneTwo.dy - complexRoot * math.cos(math.atan(k)));
-          Offset root2 = Offset(centerPointOneTwo.dx + complexRoot * math.sin(math.atan(k)), centerPointOneTwo.dy + complexRoot * math.cos(math.atan(k)));
-          canvas.drawPoints(ui.PointMode.points, [root1, root2], imaginaryRootsPaint..color=Colors.green..strokeWidth=8);
-          canvas.drawLine(root1, root2, imaginaryRootsPaint..strokeWidth=2);
+          Offset blueCenter = Offset((pointThree.dx + pointTwo.dx) / 2,
+              (pointThree.dy + pointTwo.dy) / 2);
+          canvas.drawCircle(blueCenter, blueRadius, imaginaryRootsPaint);
+          Offset yellowCenter = Offset(_width - _ratio2,
+              _height - _ratio1 + k * (_ratio2 - k * _ratio1) - shift);
+          double yellowRadius = (math.sqrt(blueRadius * blueRadius -
+              (blueRadius - _ratio1) * (blueRadius - _ratio1)));
+          canvas.drawCircle(yellowCenter, yellowRadius,
+              imaginaryRootsPaint..color = Colors.yellow.shade600);
+          Offset centerPointOneTwo = Offset((pointOne.dx + yellowCenter.dx) / 2,
+              (pointOne.dy + yellowCenter.dy) / 2);
+          double complexRoot = (math.sqrt(math.pow(yellowRadius, 2) -
+              ((centerPointOneTwo - yellowCenter).distanceSquared)));
+          Offset root1 = Offset(
+              centerPointOneTwo.dx - complexRoot * math.sin(math.atan(k)),
+              centerPointOneTwo.dy - complexRoot * math.cos(math.atan(k)));
+          Offset root2 = Offset(
+              centerPointOneTwo.dx + complexRoot * math.sin(math.atan(k)),
+              centerPointOneTwo.dy + complexRoot * math.cos(math.atan(k)));
+          canvas.drawPoints(
+              ui.PointMode.points,
+              [root1, root2],
+              imaginaryRootsPaint
+                ..color = Colors.green
+                ..strokeWidth = 8);
+          canvas.drawLine(root1, root2, imaginaryRootsPaint..strokeWidth = 2);
+          double redPathFirst =
+              (math.sqrt(math.pow(_ratio1, 2) + math.pow(k * _ratio1, 2))) /
+                  _scale;
+          double redPathSecond = (math.sqrt(math.pow(_ratio2 - k * _ratio1, 2) +
+                  math.pow(k * (_ratio2 - k * _ratio1), 2))) / _scale;
+          paintText(
+              canvas,
+              size,
+              "(${(- (redPathSecond / redPathFirst) / (2)).toStringAsFixed(1)}, ${((root1 - root2).distance / (2 * _scale)).toStringAsFixed(1)}i)",
+              root1);
+          paintText(
+              canvas,
+              size,
+              "(${(- (redPathSecond / redPathFirst) / (2)).toStringAsFixed(1)}, ${((root1 - root2).distance / (2 * _scale)).toStringAsFixed(1)}i)",
+              root2);
         }
       }
     }
