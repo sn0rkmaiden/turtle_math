@@ -27,7 +27,7 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-dependencies:
+dependencies:  
   draw_on_path: ^0.0.2
   flutter_tex: ^4.0.9
   arrow_path: ^3.1.0

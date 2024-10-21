@@ -7,11 +7,11 @@
     "@run": {
         "description": "RUN"
     },
-    "page1latex": "<h3>Visualizing solutions to 2nd and 3rd degree algebraic equations using right-angle geometric paths</h3>",
+    "page1latex": "<h3>This app allows to visualize both real and complex roots of 2nd and 3rd degree algebraic equations using right-angle geometric paths</h3>",
     "@page1latex": {
         "description": "Find roots of polynomials by shooting laser at a turtle!"
     },
-    "page1text": "For equations of odd degree there is always one real solution. For equations of even degree, there may be no real solution. But, if there are, they will occur in pairs.",
+    "page1text": "",
     "@page1text": {
         "description": ""
     },
@@ -23,7 +23,15 @@
     "@page2text": {
         "description": ""
     },
-    "page3latex": "",
+    "page6latex": "<h4>$$Background$$<h4> Equations of odd degree always have one real solution. Equations of even degree may have no real solution. But, if there are, they will occur in pairs.",
+    "@page6latex": {
+        "description": ""
+    },
+    "page6text": "<h4>Any algebraic equation can be divided by its first coefficient. So segment corresponding to the first coefficient will be draw vertically up and be 1 unit long.</h4>",
+    "@page6text": {
+        "description": ""
+    },
+    "page3latex": "Real part of complex solution is (-b / 2). Complex parts are intersections of yellow circle with (x = -b/2). Yellow circle is built on points of intersection of blue circle (which has diameter of (a + c)) with b-line.",
     "@page3latex": {
         "description": ""
     },
@@ -31,19 +39,39 @@
     "@page3text": {
         "description": ""
     },
+    "page7latex": "In cubic equations solution paths can be treated as quadratic equation's coefficients and are used to find 2 complex roots if they exist when one real is discovered.",
+    "@page7latex": {
+        "description": ""
+    },
+    "page7text": "",
+    "@page7text": {
+        "description": ""
+    },
     "page4latex": "<h4>Want to learn more? Here is a list of useful resources!</h4>",
     "@page4latex": {
+        "description": ""
+    },
+    "linkArticle": "Extending Lill's method of 1867' by Phillips Verner Bradford",
+    "@linkArticle": {
+        "description": ""
+    },
+    "linkVideo": "Mathologer video",
+    "@linkVideo": {
+        "description": ""
+    },
+    "linkWebsite": "Cool website with more links",
+    "@linkWebsite": {
         "description": ""
     },
     "page4text": "<li><a href='intent:https://web.archive.org/web/20100502013959/http://www.concentric.net/~pvb/ALG/rightpaths.html#Intent;end' target='_blank' ' style='color:lime'>'Extending Lill's method of 1867' by Phillips Verner Bradford</a></li> <li> <a href='goto://DeviceBrowser?url=https://www.youtube.com/watch?v=IUC-8P0zXe8' style='color:DeepSkyBlue'>Mathologer video</a> </li> <li> <a href='goto://DeviceBrowser?url=https://www.raulprisacariu.com/lills-method/' style='color:OrangeRed'>Cool website with more links</a> </li> ",
     "@page4text": {
         "description": ""
     },
-    "page5latex": "<h4>In general, any algebraic equation can be divided by its first coefficient, so that the first coefficient of the resulting equation is a = +1.</h4>",
+    "page5latex": "Real solutions are intersections of a circle constructed between start and end points and <h4>b-line.</h4>",
     "@page5latex": {
         "description": ""
     },
-    "page5text": "This means that the segment corresponding to the first coefficient will always be draw vertically up and be 1 unit long.",
+    "page5text": "",
     "@page5text": {
         "description": ""
     },
@@ -83,7 +111,7 @@
     "@rootsDescription": {
         "description": ""
     },
-    "drawing": "Use ONE finger to control light beam and TWO fingers move it around! To scale image double tap on right / left half of the screen.",    
+    "drawing": "Use ONE finger to control light beam and TWO fingers to move it around! To scale image double tap on right / left half of the screen.",    
     "@drawing": {
         "description": ""
     },
