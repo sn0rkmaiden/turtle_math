@@ -27,11 +27,11 @@
     "@page6latex": {
         "description": ""
     },
-    "page6text": "<h4>Any algebraic equation can be divided by its first coefficient. So segment corresponding to the first coefficient will be draw vertically up and be 1 unit long.</h4>",
+    "page6text": "<h4>Any algebraic equation can be divided by its first coefficient. So segment corresponding to the first coefficient will be draw vertically up and be 1 unit long by default.</h4>",
     "@page6text": {
         "description": ""
     },
-    "page3latex": "Real part of complex solution is (-b / 2). Complex parts are intersections of yellow circle with (x = -b/2). Yellow circle is built on points of intersection of blue circle (which has diameter of (a + c)) with b-line.",
+    "page3latex": "Real part of complex solution is <h4>(-b / 2).</h4> Complex parts are intersections of yellow circle with <h4>(x = -b/2).</h4> Yellow circle is built on points of intersection of blue circle (which has diameter of (a + c)) with <h4>b-line.</h4>",
     "@page3latex": {
         "description": ""
     },
