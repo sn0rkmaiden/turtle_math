@@ -118,6 +118,10 @@
     "hasComplexRoots": "Be careful! This equation has complex roots.",    
     "@hasComplexRoots": {
         "description": ""
+    },
+    "author": "Developed by Alice P., 2024",
+    "@author": {
+        "description": ""
     }
 
 }

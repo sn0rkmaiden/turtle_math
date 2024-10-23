@@ -87,7 +87,8 @@ class CardScreen2 extends StatelessWidget {
                     contentColor: data.subtitleColor,
                     fontStyle: TeXViewFontStyle(fontSize: 20)),
               ),
-              const Spacer(flex: 5)
+              const Spacer(flex: 5),
+              if (data.index == 1) Align(alignment: Alignment.bottomRight, child: Text(l!.author))
             ]))
       ],
     );
