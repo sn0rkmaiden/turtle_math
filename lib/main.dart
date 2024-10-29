@@ -167,10 +167,10 @@ class _MyHomePageState extends State<MyHomePage>
   final myController3 = TextEditingController();
   final myController4 = TextEditingController();
   bool isComplete = false;
-  int ratio1 = 10;
-  int ratio2 = 10;
-  int ratio3 = 10;
-  int ratio4 = 10;
+  double ratio1 = 10;
+  double ratio2 = 10;
+  double ratio3 = 10;
+  double ratio4 = 10;
   double _progress1 = 0.0;
   late Animation<double> animation1;
   late AnimationController controller1;
@@ -328,15 +328,15 @@ class _MyHomePageState extends State<MyHomePage>
 
   String getCoefficients(String t1, String t2, String t3, String t4) {
     if (t1.isNotEmpty & t2.isNotEmpty & t3.isNotEmpty & t4.isNotEmpty) {
-      int x1 = int.parse(t1);
-      int x2 = int.parse(t2);
-      int x3 = int.parse(t3);
-      int x4 = int.parse(t4);
+      double x1 = double.parse(t1);
+      double x2 = double.parse(t2);
+      double x3 = double.parse(t3);
+      double x4 = double.parse(t4);
 
       if (x1 != 0) {
-        x2 = x2 ~/ x1;
-        x3 = x3 ~/ x1;
-        x4 = x4 ~/ x1;
+        x2 = x2 / x1;
+        x3 = x3 / x1;
+        x4 = x4 / x1;
         x1 = 1;
       }
 
@@ -344,10 +344,10 @@ class _MyHomePageState extends State<MyHomePage>
           ? "x\u{00B3}"
           : x1 == -1
               ? "- x\u{00B3}"
-              : "${x1}x\u{00B3}";
-      String c2 = x2 >= 0 ? " + ${x2}x\u{00B2}" : " - ${-x2}x\u{00B2}";
-      String c3 = x3 >= 0 ? " + ${x3}x" : " - ${-x3}x";
-      String c4 = x4 >= 0 ? " + $x4 = 0" : " - ${-x4} = 0";
+              : "${x1.toStringAsFixed(2)}x\u{00B3}";
+      String c2 = x2 >= 0 ? " + ${x2.toStringAsFixed(2)}x\u{00B2}" : " - ${(-x2).toStringAsFixed(2)}x\u{00B2}";
+      String c3 = x3 >= 0 ? " + ${x3.toStringAsFixed(2)}x" : " - ${(-x3).toStringAsFixed(2)}x";
+      String c4 = x4 >= 0 ? " + $x4 = 0" : " - ${(-x4).toStringAsFixed(2)} = 0";
       return c1 + c2 + c3 + c4;
     } else {
       return "";
@@ -356,15 +356,15 @@ class _MyHomePageState extends State<MyHomePage>
 
   void getRoots(String t1, String t2, String t3, String t4) {
     if (t1.isNotEmpty & t2.isNotEmpty & t3.isNotEmpty & t4.isNotEmpty) {
-      int x1 = int.parse(t1);
-      int x2 = int.parse(t2);
-      int x3 = int.parse(t3);
-      int x4 = int.parse(t4);
+      double x1 = double.parse(t1);
+      double x2 = double.parse(t2);
+      double x3 = double.parse(t3);
+      double x4 = double.parse(t4);
 
       if (x1 != 0) {
-        x2 = x2 ~/ x1;
-        x3 = x3 ~/ x1;
-        x4 = x4 ~/ x1;
+        x2 = x2 / x1;
+        x3 = x3 / x1;
+        x4 = x4 / x1;
         x1 = 1;
       }
 
@@ -516,15 +516,15 @@ class _MyHomePageState extends State<MyHomePage>
                                         _binRes.clear();
                                         _numRoots = 0;
 
-                                        ratio1 = int.parse(myController1.text);
-                                        ratio2 = int.parse(myController2.text);
-                                        ratio3 = int.parse(myController3.text);
-                                        ratio4 = int.parse(myController4.text);
+                                        ratio1 = double.parse(myController1.text);
+                                        ratio2 = double.parse(myController2.text);
+                                        ratio3 = double.parse(myController3.text);
+                                        ratio4 = double.parse(myController4.text);
 
                                         if ((ratio1 != 0) & (ratio1 != 1)) {
-                                          ratio2 = ratio2 ~/ ratio1;
-                                          ratio3 = ratio3 ~/ ratio1;
-                                          ratio4 = ratio4 ~/ ratio1;
+                                          ratio2 = ratio2 / ratio1;
+                                          ratio3 = ratio3 / ratio1;
+                                          ratio4 = ratio4 / ratio1;
                                           ratio1 = 1;
                                         }
 
@@ -712,10 +712,10 @@ class MyPainter extends CustomPainter {
   ui.Image? image;
   double _width = 0;
   double _height = 0;
-  static int _ratio1 = 0;
-  static int _ratio2 = 0;
-  static int _ratio3 = 0;
-  static int _ratio4 = 0;
+  static double _ratio1 = 0;
+  static double _ratio2 = 0;
+  static double _ratio3 = 0;
+  static double _ratio4 = 0;
   static int _scale = 35;
   final double _progress;
   Offset tappedPoint;
