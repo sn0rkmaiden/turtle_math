@@ -13,9 +13,7 @@ This project is my first app in Flutter. It was inspired by [this awesome Mathol
 
 ## :rocket: How to use?
 
-You can find and download ```.apk``` file in project folder.
-
-I have published my app on [Rustore platform](https://www.rustore.ru/catalog/app/com.example.turtle_maths) as well.
+You download my app from [Rustore platform](https://www.rustore.ru/catalog/app/com.example.turtle_maths).
 
 ## :thought_balloon: Feedback and contribution
 
