@@ -4,7 +4,7 @@ Visualize real and complex solutions of 2nd and 3rd degree polynomials using for
 
 ## :clipboard: About
 
-This project is my first app in Flutter. It was inspired by [this awesome Mathologer YouTube video](https://www.youtube.com/watch?v=IUC-8P0zXe8). 
+This project is my first app in Flutter. It was inspired by [this awesome Mathologer YouTube video](https://www.youtube.com/watch?v=IUC-8P0zXe8). **_Currently works only on Android devices_**.
 
  References (check them out if you want to learn more!):
 
@@ -13,7 +13,7 @@ This project is my first app in Flutter. It was inspired by [this awesome Mathol
 
 ## :rocket: How to use?
 
-You download my app from [Rustore platform](https://www.rustore.ru/catalog/app/com.example.turtle_maths).
+You can build the app yourself in ```Visual Studio Code``` or ```Android Studio``` or download my app from [Rustore platform](https://www.rustore.ru/catalog/app/com.example.turtle_maths).
 
 ## :thought_balloon: Feedback and contribution
 
